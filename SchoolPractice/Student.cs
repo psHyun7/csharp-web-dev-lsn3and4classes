@@ -32,8 +32,9 @@ namespace SchoolPractice
         {
             // Update the appropriate properties: NumberOfCredits, Gpa
             double qualityScore = this.Gpa * this.NumberOfCredits;
-            double newQualityScore = qualityScore + grade;
+            double newQualityScore = qualityScore + grade * courseCredits;
             Gpa = newQualityScore / (this.NumberOfCredits + courseCredits);
+            this.NumberOfCredits += courseCredits;
         }
 
         //TODO: Complete the GetGradeLevel method here:
@@ -68,8 +69,23 @@ namespace SchoolPractice
         // TODO: Add your custom 'ToString' method here. Make sure it returns a well-formatted string rather
         //  than just the class fields.
 
+        public override string ToString()
+        {
+            return this.Name + " (" + GetGradeLevel(this.NumberOfCredits) + ", Credits: " + NumberOfCredits + ", GPA: " + Gpa + ")";
+        }
+
         // TODO: Add your custom 'Equals' method here. Consider which fields should match in order to call two
         //  Student objects equal.
+        public override bool Equals(object obj)
+        {
+            return obj is Student student &&
+                   Name == student.Name &&
+                   StudentId == student.StudentId;
+        }
 
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, StudentId, NumberOfCredits, Gpa);
+        }
     }
 }
